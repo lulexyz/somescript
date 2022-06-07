@@ -3,3 +3,9 @@
 ```
 bash <(curl -sL raw.githubusercontent.com/lulexyz/somescript/main/gclone-mount)
 ```
+#### 手动操作
+```
+重启挂载服务：systemctl restart gclone-{云盘名称}
+停止挂载服务：systemctl stop gclone-{云盘名称}  
+删除挂载服务：systemctl disable gclone-{云盘名称} 
+```
