@@ -126,14 +126,13 @@ ExecStart = /usr/bin/gclone mount $drivename: "$path" \
 --daemon-timeout=10m \
 --dir-cache-time 24h \
 --poll-interval 1h \
---vfs-cache-mode full \
---vfs-cache-max-age 24h \
---vfs-cache-max-size 4G \
---cache-dir=/tmp/vfs_cache \
---buffer-size 256M \
 --vfs-read-chunk-size 80M \
 --vfs-read-chunk-size-limit 1G \
---vfs-cache-max-size 20G \
+--vfs-cache-mode full \
+--vfs-cache-max-age 24h \
+--vfs-cache-max-size 10G \
+--cache-dir=/tmp/vfs_cache \
+--buffer-size 256M \
 --transfers 8 \
 --low-level-retries 200 \
 --log-level INFO \
