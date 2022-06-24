@@ -118,28 +118,25 @@ RestartSec=5
 User=root
 ExecStart = /usr/bin/gclone mount $drivename: "$path" \
 --umask 000 \
---default-permissions \
---no-check-certificate \
 --allow-other \
 --allow-non-empty \
 --use-mmap \
 --daemon-timeout=10m \
 --dir-cache-time 24h \
 --poll-interval 1h \
---vfs-read-chunk-size 80M \
---vfs-read-chunk-size-limit 1G \
---vfs-cache-mode full \
+--vfs-cache-mode writes \
 --vfs-cache-max-age 24h \
---vfs-cache-max-size 10G \
+--vfs-cache-max-size 4G \
 --cache-dir=/tmp/vfs_cache \
 --buffer-size 256M \
+--vfs-read-chunk-size 80M \
+--vfs-read-chunk-size-limit 1G \
 --transfers 8 \
 --low-level-retries 200 \
 --log-level INFO \
 --log-file=/home/gclone.log
 ExecStop=/bin/fusermount -u "$path"
 Restart=on-abort
-
 [Install]
 WantedBy = multi-user.target
 EOF
