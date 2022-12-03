@@ -9,7 +9,7 @@ function gclone_install()
         echo -e "\033[32m检查到Gclone已安装!\033[0m"
     else
         echo -e "\n|  Gclone is installing ... "
-        bash <(wget -qO- https://git.io/gclone.sh)
+        bash <(wget -qO- https://github.com/lulexyz/somescript/blob/main/gclone.sh)
         # 安装fuse 支持
         sudo apt-get install -y fuse
     fi
