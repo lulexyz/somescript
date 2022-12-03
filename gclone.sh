@@ -37,7 +37,7 @@ esac
 
 wget -qO- https://api.github.com/repos/l3v11/gclone/releases/latest \
 | grep browser_download_url | grep "$BINTAG" | cut -d '"' -f 4 \
-| wget --no-verbose -i- -O- | gzip -d -c > ${CLDBIN}
+| wget --no-verbose -i- -O- | unzip  > ${CLDBIN}
 chmod 0755 ${CLDBIN}
 
 gclone version
