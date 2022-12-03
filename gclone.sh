@@ -33,7 +33,7 @@ case $OSARCH in
         echo "unsupported OSARCH: $OSARCH"
         exit 1
         ;;
-esac
+esac 
 
 wget -qO- https://api.github.com/repos/l3v11/gclone/releases/latest \
 | grep browser_download_url | grep "$BINTAG" | cut -d '"' -f 4 \
