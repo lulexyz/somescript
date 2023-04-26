@@ -1,43 +1,67 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-set -o errexit
-set -o pipefail
-set -o nounset
-
-if ! command -v systemctl >/dev/null 2>&1; then
-    echo "> Sorry but this scripts is only for Linux with systemd, eg: Ubuntu 16.04+/Centos 7+ Debian 10..."
+if [ $(id -u) -ne 0 ]; then
+    echo "必须以root用户身份运行此脚本！"
     exit 1
 fi
 
-if [[ $(id -u) -ne 0 ]]; then
-    echo "This script must be run as root" 
-    exit 1
+if ! command -v unzip >/dev/null 2>&1 ; then
+    echo "未检测到 unzip 命令，正在安装..."
+    apt-get update
+    apt-get install -y unzip
 fi
 
-CLDBIN=/usr/bin/gclone
-OSARCH=$(uname -m)
-case $OSARCH in 
-    x86_64)
-        BINTAG=linux-amd64
+if ! command -v curl >/dev/null 2>&1 ; then
+    echo "未检测到 curl 命令，正在安装..."
+    apt-get update
+    apt-get install -y curl
+fi
+
+# 获取操作系统和架构信息
+OS="$(uname | tr '[:upper:]' '[:lower:]')"
+ARCH="$(uname -m)"
+
+# 根据操作系统和架构选择下载URL
+case "$ARCH" in
+    "x86_64")
+        ARCH="amd64"
         ;;
-    i*86)
-        BINTAG=linux-386
-        ;;
-    arm64)
-        BINTAG=linux-arm64
-        ;;
-    arm*)
-        BINTAG=linux-arm-v7
+    "aarch64")
+        ARCH="arm64"
         ;;
     *)
-        echo "unsupported OSARCH: $OSARCH"
+        echo "Unsupported architecture: $ARCH"
         exit 1
         ;;
-esac 
+esac
 
-wget -qO- https://api.github.com/repos/l3v11/gclone/releases/latest \
-| grep browser_download_url | grep "$BINTAG" | cut -d '"' -f 4 \
-| wget --no-verbose -i- -O- | jar xvf ${CLDBIN}
-chmod 0755 ${CLDBIN}
+case "$OS" in
+    "linux")
+        OS="linux"
+        ;;
+    "darwin")
+        OS="osx"
+        ;;
+    *)
+        echo "Unsupported operating system: $OS"
+        exit 1
+        ;;
+esac
 
-gclone version
+# 设置发行包下载URL
+GCLONE_URL="https://github.com/l3v11/gclone/releases/download/v1.62.2-purple//gclone-v1.62.2-purple-${OS}-${ARCH}.zip"
+
+# 下载并解压gclone发行包
+echo "Downloading gclone from: $GCLONE_URL"
+curl -L "$GCLONE_URL" -o gclone.zip
+unzip  gclone.zip
+
+# 将gclone移动到 /usr/local/bin/ 并给予执行权限
+mv gclone-v1.62.2-purple-${OS}-${ARCH}/gclone /usr/local/bin/
+chmod +x /usr/local/bin/gclone
+
+# 清理
+rm -f gclone.zip
+rm -rf gclone-v1.62.2-purple-${OS}-${ARCH}
+
+echo "Gclone has been installed successfully."
