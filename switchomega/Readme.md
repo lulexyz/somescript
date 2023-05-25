@@ -1,0 +1,1 @@
+switchomega配置
