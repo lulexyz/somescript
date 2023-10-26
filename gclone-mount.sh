@@ -15,6 +15,18 @@ function gclone_install()
     fi
 }
 
+# 检查是否安装fuse
+function check_fuse()
+{
+	if ! command -v fuse > /dev/null; then
+        	echo "fuse is not installed. Installing..."
+    		sudo apt update
+    		sudo apt install -y fuse
+	else
+    		echo "fuse is already installed."
+	fi
+}
+
 # 设置变量
 setting(){
     # 设置服务名称后缀
@@ -192,5 +204,7 @@ echo -e "=================================================================="
 
 # 安装Gclone
 gclone_install
+# 安装fuse
+check_fuse
 # 设置变量
 setting
