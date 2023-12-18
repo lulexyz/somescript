@@ -11,7 +11,7 @@ function gclone_install()
         echo -e "\n|  Gclone is installing ... "
         bash <(wget -qO- https://raw.githubusercontent.com/lulexyz/somescript/main/gclone.sh)
         # 安装fuse 支持
-        sudo apt-get install -y fuse
+        sudo apt-get install -y fuse3
     fi
 }
 
@@ -21,7 +21,7 @@ function check_fuse()
 	if ! command -v fuse > /dev/null; then
         	echo "fuse is not installed. Installing..."
     		sudo apt update
-    		sudo apt install -y fuse
+    		sudo apt install -y fuse3
 	else
     		echo "fuse is already installed."
 	fi
