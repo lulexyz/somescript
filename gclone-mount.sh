@@ -128,7 +128,7 @@ KillMode=none
 Restart=on-failure
 RestartSec=5
 User=root
-ExecStart = /usr/bin/gclone mount $drivename: "$path" \
+ExecStart = /usr/local/bin/gclone mount $drivename: "$path" \
 --umask 000 \
 --allow-other \
 --allow-non-empty \
